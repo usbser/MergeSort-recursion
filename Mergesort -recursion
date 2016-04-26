@@ -1,0 +1,45 @@
+#include<iostream>
+using namespace std;
+template<class type>
+void copy(type x[], type y[], int s, int n)
+{
+	for (int i = s;i <= n;i++)
+	{
+		x[i] = y[i];
+	}
+}
+template<class type>
+void Merge(type c[], type d[], int l, int m, int r)
+{
+	//合并c[1:m] 和c[m+1:r]到d[l:r]
+	int i = l, j = m + 1, k = l;
+	while ((i <= m) && (j <= r))
+	{
+		if (c[i] <= c[j]) d[k++] = c[i++];
+		else d[k++] = c[j++];
+	}
+	if (i <= m)for (int q = i;q <= m;q++) d[k++] = c[q];
+	else  for (int q = j;q <= r;q++) d[k++] = c[q];
+}
+template<class type>
+void MergeSort(type a[], int left ,int right )
+{	
+	type *b = new type[right - left];
+	if (left<right)//至少有2个元素
+	{
+		int i = (left + right) / 2;//取中点
+		MergeSort(a, left, i);
+		MergeSort(a, i + 1, right);
+		Merge(a, b, left, i, right);//合并到数组b
+		copy(a, b, left, right);//复制到数组a
+	}
+}
+int main()
+{
+	int a[] = { 0,1000,55,654,12,333,66666,2,548,22,996,24,11,5};
+	MergeSort(a, 1,13);
+	for (int i = 1;i < 13;i++)
+	{
+		cout << a[i] << endl;
+	}
+}
